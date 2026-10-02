@@ -1,1 +1,1 @@
-web: python green/green.py
+web: python green.py
