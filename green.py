@@ -211,18 +211,29 @@ owner_id is the Telegram user who ordered the pack - the set is
                                 stickers=[item],
                                 sticker_type=sticker_type,
                             )
-except TelegramBadRequest as e:
+                        except TelegramBadRequest as e:
                             if "already occupied" not in str(e).lower():
                                 raise
-                            await bot.add_sticker_to_set(user_id=owner_id, name=name, sticker=item)
+                            await bot.add_sticker_to_set(
+                                user_id=owner_id,
+                                name=name,
+                                sticker=item
+                            )
+
                         packs[storage_key] = name
                         save_packs(packs)
                     else:
-                        await bot.add_sticker_to_set(user_id=owner_id, name=name, sticker=item)
+                        await bot.add_sticker_to_set(
+                            user_id=owner_id,
+                            name=name,
+                            sticker=item
+                        )
+
                     break
+
                 except TelegramRetryAfter as e:
                     await update(
-                        f"â³ Telegram cheklovi sababli {e.retry_after}s kutyapmiz "
+                        f"⏳ Telegram cheklovi sababli {e.retry_after}s kutyapmiz "
                         f"({i}/{total} qo'shildi), keyin davom etamiz..."
                     )
                     await asyncio.sleep(e.retry_after + 1)
