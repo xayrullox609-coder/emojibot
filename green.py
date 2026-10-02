@@ -199,7 +199,7 @@ owner_id is the Telegram user who ordered the pack - the set is
             name = f"{_safe_nick(nick)}_{owner_id}_by_{me.username}"
 
         for i, sticker_path in enumerate(sticker_paths):
-            item = InputSticker(sticker=FSInputFile(sticker_path), format="animated", emoji_list=["ðŸ™‚"])
+            item = InputSticker(sticker=FSInputFile(sticker_path), format="animated", emoji_list=["🙂"])
             while True:
                 try:
                     if i == 0 and storage_key not in packs:
@@ -214,23 +214,12 @@ owner_id is the Telegram user who ordered the pack - the set is
                         except TelegramBadRequest as e:
                             if "already occupied" not in str(e).lower():
                                 raise
-                            await bot.add_sticker_to_set(
-                                user_id=owner_id,
-                                name=name,
-                                sticker=item
-                            )
-
+                            await bot.add_sticker_to_set(user_id=owner_id, name=name, sticker=item)
                         packs[storage_key] = name
                         save_packs(packs)
                     else:
-                        await bot.add_sticker_to_set(
-                            user_id=owner_id,
-                            name=name,
-                            sticker=item
-                        )
-
+                        await bot.add_sticker_to_set(user_id=owner_id, name=name, sticker=item)
                     break
-
                 except TelegramRetryAfter as e:
                     await update(
                         f"⏳ Telegram cheklovi sababli {e.retry_after}s kutyapmiz "
@@ -239,7 +228,7 @@ owner_id is the Telegram user who ordered the pack - the set is
                     await asyncio.sleep(e.retry_after + 1)
                     continue
 
-            await update(f"â³ Tayyorlanmoqda: {i + 1}/{total} qo'shildi")
+            await update(f"⏳ Tayyorlanmoqda: {i + 1}/{total} qo'shildi")
         return name
     except Exception as e:
         logging.warning(f"pack update failed: {e}")
